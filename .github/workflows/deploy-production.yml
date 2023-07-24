@@ -13,12 +13,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
-      - name: Checkout code
-        uses: actions/checkout@v3
         
       - name: Build and Tag Docker Image
-        run: docker build -t my-app:${{ github.sha }} .
+        run: docker build -t my-app:${{ github.sha }} ./aws-docker-deployment/tree/Production
 
       - name: Log in to AWS ECR
         uses: aws-actions/configure-aws-credentials@v1
