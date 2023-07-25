@@ -1,0 +1,11 @@
+version: 1
+task_definition:
+  task_execution_role:
+    ecsTaskExecutionRole
+  network_mode: awsvpc
+  container_definitions:
+    - name: nginx-container
+      image: 220816636489.dkr.ecr. us-east-1.amazonaws.com/nginx-image:latest
+      portMappings:
+        - containerPort: 80
+      essential: true
