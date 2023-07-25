@@ -5,7 +5,7 @@ task_definition:
   network_mode: awsvpc
   container_definitions:
     - name: nginx-container
-      image: 220816636489.dkr.ecr.us-east-1.amazonaws.com/nginx-image:latest
+      image: 220816636489.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
       portMappings:
         - containerPort: 80
       essential: true
