@@ -1,0 +1,19 @@
+version: 1
+service:
+  desired_count: 2
+  task_definition: task_definition.yml
+  cluster: cluster
+  load_balancers:
+    - container_name: nginx-container
+      container_port: 80
+      target_group_arn: !Ref ALBTargetGroup
+  deployment_controller:
+    type: ECS
+  network_configuration:
+    awsvpc_configuration:
+      subnets:
+        - !Ref PrivateSubnet1
+        - !Ref PrivateSubnet2
+        - !Ref PrivateSubnet3
+      security_groups:
+        - !Ref ECSSecurityGroup
