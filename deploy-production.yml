@@ -29,8 +29,8 @@ jobs:
             IMAGE_NAME: my-app
             TAG: ${{ github.sha }}
         run: |
-            docker build -t $ECR_REGISTRY/$REPOSITORY:$IMAGE_NAME:$TAG .
-            docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_NAME:$TAG
+            docker build -t $ECR_REGISTRY/$IMAGE_NAME:$TAG .
+            docker push $ECR_REGISTRY/$IMAGE_NAME:$TAG
 
       - name: Deploy to Fargate
         env:
