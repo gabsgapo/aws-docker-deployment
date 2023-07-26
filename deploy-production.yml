@@ -27,10 +27,10 @@ jobs:
             ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
             REPOSITORY: my-ecr-repo
             IMAGE_NAME: my-app
-            TAG: ${{ github.sha }}
+            IMAGE_TAG: ${{ github.sha }}
         run: |
-            docker build -t $ECR_REGISTRY/$REPOSITORY/$IMAGE_NAME:$TAG .
-            docker push $ECR_REGISTRY/$REPOSITORY/$IMAGE_NAME:$TAG
+            docker build -t $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG .
+            docker push $ECR_REGISTRY/$REPOSITORY:$IMAGE_TAG
 
       - name: Deploy to Fargate
         env:
