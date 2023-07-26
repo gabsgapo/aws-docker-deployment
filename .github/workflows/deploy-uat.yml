@@ -12,25 +12,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         
-      - name: Log in to AWS ECR
-        id: login-ecr
+      - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1 
-        
-      - name: Build, Tag and Tag Docker Image
+          aws-region: us-east-1
+      
+      - name: Log in to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+              
+      - name: Build, Tag and Push Docker Image to AWS ECR
         env:
           ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ECR_REPOSITORY: nginx-image
           IMAGE_NAME: my-app
-          IMAGE_TAG: ${{ github.sha }}
+          TAG: ${{ github.sha }}
         run: |
-          docker tag my-app:${{ github.sha }} 220816636489.dkr.ecr.us-east-1.amazonaws.com/my-app:${{ github.sha }}
-          docker push 220816636489.dkr.ecr.us-east-1.amazonaws.com/my-app:${{ github.sha }}
-
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_NAME:$TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY/$IMAGE_NAME:$TAG
+          
       - name: Deploy to Fargate
         env:
           AWS_REGION: us-east-1 
@@ -46,3 +50,4 @@ jobs:
               TaskDefinitionFile=$TASK_DEFINITION_FILE \
               ServiceDefinitionFile=$SERVICE_DEFINITION_FILE \
             --capabilities CAPABILITY_NAMED_IAM
+            
