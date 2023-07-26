@@ -28,8 +28,8 @@ jobs:
           IMAGE_NAME: my-app
           IMAGE_TAG: ${{ github.sha }}
         run: |
-            docker build -t $ECR_REGISTRY/$IMAGE_NAME:$TAG .
-            docker push $ECR_REGISTRY/$IMAGE_NAME:$TAG
+          docker tag my-app:${{ github.sha }} 220816636489.dkr.ecr.us-east-1.amazonaws.com/my-app:${{ github.sha }}
+          docker push 220816636489.dkr.ecr.us-east-1.amazonaws.com/my-app:${{ github.sha }}
 
       - name: Deploy to Fargate
         env:
